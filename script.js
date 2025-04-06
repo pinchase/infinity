@@ -208,3 +208,27 @@ function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+ // Simple form validation and submission handling
+ document.getElementById('subscribe-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const emailInput = document.getElementById('email-input');
+    const email = emailInput.value.trim();
+    
+    if (!isValidEmail(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    // Here you would typically send the email to your server
+    // For this example, we'll just show a success message
+    alert('Thank you for subscribing!');
+    emailInput.value = '';
+  });
+  
+  function isValidEmail(email) {
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
