@@ -1,15 +1,47 @@
-   // JavaScript for interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Video play buttons functionality
-            const videoButtons = document.querySelectorAll('.video-btn, .video-play');
-            videoButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    alert('Video player would open here');
-                });
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const closeBtn = document.querySelector('.close-sidebar');
+    const overlay = document.querySelector('.overlay');
+    const body = document.body;
 
-            // Smooth scrolling for navigation links
-            const navLinks = document.querySelectorAll('.nav-links a');
+    // Function to open sidebar
+    function openSidebar() {
+        sidebar.classList.add('active');
+        overlay.style.display = 'block';
+        menuToggle.classList.add('active');
+        body.style.overflow = 'hidden'; // Prevent scrolling when sidebar is open
+    }
+
+    // Function to close sidebar
+    function closeSidebar() {
+        sidebar.classList.remove('active');
+        overlay.style.display = 'none';
+        menuToggle.classList.remove('active');
+        body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Event listeners
+    menuToggle.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // Close sidebar when clicking links
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', closeSidebar);
+    });
+
+    // Close sidebar when window is resized to desktop size
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 992 && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
+});
+  // JavaScript for interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+                      const navLinks = document.querySelectorAll('.nav-links a');
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -31,7 +63,7 @@
                 alert('Learn more page would open here');
             });
         });
-        // JavaScript for IGFO Website
+       
 
 document.addEventListener('DOMContentLoaded', function() {
     // Add smooth scrolling for all learn more buttons
@@ -39,9 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     learnMoreButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // This would typically navigate to a detail page
-            // For now, we'll just log a message
-            const programName = this.closest('.program-item, .project-card')
+                    const programName = this.closest('.program-item, .project-card')
                 .querySelector('h2').textContent;
             
             console.log(`Learning more about: ${programName}`);
@@ -93,18 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 });
 document.addEventListener('DOMContentLoaded', function() {
-    // Donation chart data
-    const donationData = [
-        { category: "Skills training", percentage: 40, color: "#c8f7d6" },
-        { category: "Empowering programs", percentage: 35, color: "#a094f0" },
-        { category: "Helping people", percentage: 10, color: "#f5f5dc" },
-        { category: "Seminars", percentage: 10, color: "#f1c75b" },
-        { category: "Feeding the poor", percentage: 5, color: "#f5a4c7" }
-    ];
-
-    // Create donut chart using D3.js
-    createDonutChart(donationData);
-    
+   
     // Add event listeners for buttons
     document.querySelectorAll('.btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -154,54 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Function to create donut chart
-function createDonutChart(data) {
-    const width = 300;
-    const height = 300;
-    const radius = Math.min(width, height) / 2;
-    
-    // Clear any existing SVG
-    d3.select("#donut-chart").html("");
-    
-    // Create SVG
-    const svg = d3.select("#donut-chart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
-    
-    // Create a pie layout
-    const pie = d3.pie()
-        .value(d => d.percentage)
-        .sort(null);
-    
-    // Arc generator
-    const arc = d3.arc()
-        .innerRadius(radius * 0.6) // This creates the donut hole
-        .outerRadius(radius);
-    
-    // Create pie chart
-    const arcs = svg.selectAll(".arc")
-        .data(pie(data))
-        .enter()
-        .append("g")
-        .attr("class", "arc");
-    
-    // Add path (shapes)
-    arcs.append("path")
-        .attr("d", arc)
-        .attr("fill", d => d.data.color)
-        .attr("stroke", "#1e2130")
-        .attr("stroke-width", 2)
-        .style("opacity", 0.9)
-        .on("mouseover", function() {
-            d3.select(this).style("opacity", 1);
-        })
-        .on("mouseout", function() {
-            d3.select(this).style("opacity", 0.9);
-        });
-}
 
 // Email validation function
 function validateEmail(email) {
@@ -232,3 +203,79 @@ function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
+// Donation data
+document.addEventListener('DOMContentLoaded', function() {
+    // Data for the chart
+    const data = [
+        { category: 'Skills training', percentage: 40, color: '#c3e6c3' },
+        { category: 'Empowering programs', percentage: 35, color: '#b39ddb' },
+        { category: 'Helping people', percentage: 10, color: '#fff3cd' },
+        { category: 'Seminars', percentage: 10, color: '#ffe082' },
+        { category: 'Feeding the poor', percentage: 5, color: '#f8bbd0' }
+    ];
+    
+    // Create donut chart
+    createDonutChart(data);
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        // Clear and redraw chart when window is resized
+        document.getElementById('donutChart').innerHTML = '';
+        createDonutChart(data);
+    });
+});
+
+function createDonutChart(data) {
+    const svg = document.getElementById('donutChart');
+    const center = { x: 50, y: 50 };
+    const radius = 40;
+    const innerRadius = 25;
+    
+    let startAngle = 0;
+    
+    // Calculate total for validation
+    const total = data.reduce((sum, item) => sum + item.percentage, 0);
+    
+    // Create paths for each segment
+    data.forEach(item => {
+        // Calculate angles
+        const angleSize = (item.percentage / total) * 360;
+        const endAngle = startAngle + angleSize;
+        
+        // Calculate path coordinates
+        const x1 = center.x + radius * Math.cos((startAngle - 90) * Math.PI / 180);
+        const y1 = center.y + radius * Math.sin((startAngle - 90) * Math.PI / 180);
+        const x2 = center.x + radius * Math.cos((endAngle - 90) * Math.PI / 180);
+        const y2 = center.y + radius * Math.sin((endAngle - 90) * Math.PI / 180);
+        
+        const x1Inner = center.x + innerRadius * Math.cos((startAngle - 90) * Math.PI / 180);
+        const y1Inner = center.y + innerRadius * Math.sin((startAngle - 90) * Math.PI / 180);
+        const x2Inner = center.x + innerRadius * Math.cos((endAngle - 90) * Math.PI / 180);
+        const y2Inner = center.y + innerRadius * Math.sin((endAngle - 90) * Math.PI / 180);
+        
+        // Determine if the arc should be drawn as a large arc
+        const largeArcFlag = angleSize > 180 ? 1 : 0;
+        
+        // Create the SVG path
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        
+        // Define the path
+        const d = [
+            `M ${x1} ${y1}`,
+            `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+            `L ${x2Inner} ${y2Inner}`,
+            `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x1Inner} ${y1Inner}`,
+            'Z'
+        ].join(' ');
+        
+        path.setAttribute('d', d);
+        path.setAttribute('fill', item.color);
+        path.setAttribute('stroke', '#1c2030');
+        path.setAttribute('stroke-width', '0.5');
+        
+        svg.appendChild(path);
+        
+        // Update the starting angle for the next segment
+        startAngle += angleSize;
+    });
+}
