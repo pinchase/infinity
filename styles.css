@@ -597,7 +597,7 @@
   
   .programs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 100px;
   }
   
@@ -1159,6 +1159,12 @@
   }
   
   /* Media Queries for Responsive Design */
+  @media (max-width: 1024px) {
+    .programs-grid {
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 60px; 
+    }
+  }
   @media (max-width: 992px) {
     /* Mobile Navigation */
     .nav-links, 
@@ -1207,8 +1213,9 @@
       grid-template-columns: 1fr;
     }
     .programs-grid {
-        gap: 20px; 
-      }
+      grid-template-columns: 1fr; 
+      gap: 20px; 
+    }
     
     /* About Section */
     .about-section {
